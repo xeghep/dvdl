@@ -1,0 +1,155 @@
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MapPin, Phone } from "lucide-react";
+import Image from "next/image";
+
+const routes = [
+  "Đức Phổ",
+  "Quảng Ngãi",
+  "Chu Lai",
+  "Hội An",
+  "Đà Nẵng"
+];
+
+const daNangAttractions = [
+  { name: "Cầu Rồng", img: "https://images.unsplash.com/photo-1606220637944-64d13d2da6da" },
+  { name: "Bà Nà Hills", img: "https://images.unsplash.com/photo-1610621286473-d978ba1894f2" },
+  { name: "Biển Mỹ Khê", img: "https://images.unsplash.com/photo-1599391050464-9d1aa5db911a" }
+];
+
+export default function XeKePage() {
+  const [formData, setFormData] = useState({ name: "", phone: "", route: "" });
+  const [feedback, setFeedback] = useState({ name: "", comment: "" });
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    alert("Cảm ơn bạn đã đặt xe. Chúng tôi sẽ liên hệ sớm!");
+    setFormData({ name: "", phone: "", route: "" });
+  };
+
+  const handleFeedbackSubmit = (e) => {
+    e.preventDefault();
+    alert("Cảm ơn bạn đã đánh giá dịch vụ!");
+    setFeedback({ name: "", comment: "" });
+  };
+
+  return (
+    <div className="p-4 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold text-center mb-4">Đức Phổ Travel - Dịch vụ Xe Ké - Bao Xe - Du Lịch</h1>
+      <p className="text-center mb-6 text-gray-600">
+        Ghép chuyến linh hoạt từ Đức Phổ đến Đà Nẵng và ngược lại. Cung cấp dịch vụ bao xe từ 4 đến 30 chỗ, tour du lịch hấp dẫn.
+      </p>
+
+      <div className="flex justify-center mb-10">
+        <a
+          href="tel:0914794451"
+          className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-full flex items-center"
+        >
+          <Phone className="mr-2" /> Gọi Ngay: 0914 794 451
+        </a>
+      </div>
+
+      <h2 className="text-2xl font-semibold mb-4">Tuyến Xe Ké</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        {routes.map((start, i) => {
+          const subRoutes = routes.slice(i + 1);
+          return subRoutes.map((end) => (
+            <Card key={`${start}-${end}`} className="shadow-xl rounded-2xl">
+              <CardContent className="p-4">
+                <div className="flex items-center mb-2">
+                  <MapPin className="text-green-500 mr-2" />
+                  <h2 className="text-xl font-semibold">
+                    {start} → {end}
+                  </h2>
+                </div>
+                <p className="text-sm text-gray-500 mb-4">
+                  Tuyến ghép từ {start} đến {end}, hỗ trợ đi chiều ngược lại.
+                </p>
+                <Button className="w-full">Đặt chuyến</Button>
+              </CardContent>
+            </Card>
+          ));
+        })}
+      </div>
+
+      <h2 className="text-2xl font-semibold mb-4">Điểm Du Lịch Nổi Bật tại Đà Nẵng</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        {daNangAttractions.map((place) => (
+          <Card key={place.name} className="overflow-hidden rounded-2xl shadow-lg">
+            <Image
+              src={place.img}
+              alt={place.name}
+              width={600}
+              height={400}
+              className="object-cover w-full h-48"
+            />
+            <CardContent className="p-4">
+              <h3 className="text-lg font-bold">{place.name}</h3>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="text-center text-gray-600 mb-10">
+        <p>
+          Chúng tôi nhận bao xe trọn gói, phục vụ du lịch cá nhân, gia đình, nhóm từ 4 đến 30 chỗ. Đảm bảo an toàn – tiện lợi – giá hợp lý.
+        </p>
+      </div>
+
+      <div className="bg-gray-100 rounded-xl p-6 mb-10">
+        <h2 className="text-xl font-semibold mb-4">Đặt Xe Ngay</h2>
+        <form onSubmit={handleFormSubmit} className="grid gap-4">
+          <input
+            type="text"
+            placeholder="Họ tên của bạn"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            type="tel"
+            placeholder="Số điện thoại"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Tuyến xe bạn muốn đi (VD: Đức Phổ → Hội An)"
+            value={formData.route}
+            onChange={(e) => setFormData({ ...formData, route: e.target.value })}
+            className="p-2 border rounded"
+            required
+          />
+          <Button type="submit" className="w-full bg-blue-500 text-white">Gửi Đặt Xe</Button>
+        </form>
+      </div>
+
+      <div className="bg-white rounded-xl p-6 shadow">
+        <h2 className="text-xl font-semibold mb-4">Đánh Giá Trải Nghiệm</h2>
+        <form onSubmit={handleFeedbackSubmit} className="grid gap-4">
+          <input
+            type="text"
+            placeholder="Tên của bạn"
+            value={feedback.name}
+            onChange={(e) => setFeedback({ ...feedback, name: e.target.value })}
+            className="p-2 border rounded"
+            required
+          />
+          <textarea
+            placeholder="Cảm nhận của bạn về dịch vụ"
+            value={feedback.comment}
+            onChange={(e) => setFeedback({ ...feedback, comment: e.target.value })}
+            className="p-2 border rounded"
+            rows={4}
+            required
+          />
+          <Button type="submit" className="w-full bg-yellow-500 text-white">Gửi Đánh Giá</Button>
+        </form>
+      </div>
+    </div>
+  );
+}
